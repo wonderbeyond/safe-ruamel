@@ -1,0 +1,43 @@
+[tool.poetry]
+name = "safe-ruamel"
+version = "0.0.0"
+description = "A proxy class for ruamel.yaml.YAML that bypass the thread safety issue."
+readme = "README.md"
+homepage = "https://github.com/wonderbeyond/safe-ruamel"
+repository = "https://github.com/wonderbeyond/safe-ruamel"
+documentation = "https://github.com/wonderbeyond/safe-ruamel"
+keywords = ["python", "scheduler", "cronjob", "crontab"]
+authors = ["Wonder <wonderbeyond@gmail.com>"]
+license = "MIT"
+classifiers = [
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+
+[tool.poetry-dynamic-versioning]
+enable = true
+vcs = "git"
+style = 'pep440'
+pattern = 'default-unprefixed'
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pytest = {version = "^7.1.2", optional = true}
+tox = {version = "^3.25.0", optional = true}
+"ruamel.yaml" = "^0.17.21"
+
+[tool.poetry.dev-dependencies]
+ipdb = "^0.13.9"
+ipython = "^8.4.0"
+flake8 = "^4.0.1"
+mypy = "^0.961"
+
+[tool.poetry.extras]
+testing = ["pytest", "tox"]
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
+build-backend = "poetry_dynamic_versioning.backend"
