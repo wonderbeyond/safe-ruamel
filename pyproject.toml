@@ -27,7 +27,7 @@ pattern = 'default-unprefixed'
 python = "^3.7"
 pytest = {version = "^7.1.2", optional = true}
 tox = {version = "^3.25.0", optional = true}
-"ruamel.yaml" = "^0.17.21"
+"ruamel.yaml" = ">=0.1.0,<1.0"
 
 [tool.poetry.extras]
 testing = ["pytest", "tox"]
