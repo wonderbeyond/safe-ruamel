@@ -260,7 +260,7 @@ testing = ["pytest", "tox"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "3ecb3d60e18c4c922e88026a20be3c3b8b16bcdaf351a89ba94e6e7062472e7d"
+content-hash = "a9a8b0152b75638518ee546a9d153a5ab893854a9782fe4c681cc23806832926"
 
 [metadata.files]
 attrs = [
