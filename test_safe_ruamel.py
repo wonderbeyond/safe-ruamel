@@ -56,7 +56,8 @@ def random_load_n_times(n):
 
 def test_concurrent_use_yaml():
     for _ in range(concurrent):
-        threads.append(t := threading.Thread(target=random_load_n_times, args=(times_inner,)))
+        t = threading.Thread(target=random_load_n_times, args=(times_inner,))
+        threads.append(t)
         t.start()
 
     for t in threads:
