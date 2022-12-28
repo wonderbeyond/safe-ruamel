@@ -3,29 +3,29 @@ This module is published at https://gist.github.com/wonderbeyond/f6c24690db42c87
 """
 from typing import cast, IO, Union
 import io
-import os
-from concurrent.futures import ProcessPoolExecutor
+from contextvars import ContextVar
 
 import ruamel.yaml
 
 __all__ = ['YAML', 'yaml']
 
-_process_cache: dict = {}
+_yaml: ContextVar[ruamel.yaml.YAML] = ContextVar('yaml')
 
-_x_process_executor = ProcessPoolExecutor(max_workers=os.cpu_count())
+
+def _set_yaml():
+    if not _yaml.get(None):
+        _yaml.set(ruamel.yaml.YAML())
 
 
 def _yaml_load(input: str):
-    yaml = _process_cache.get('yaml')
-    if not yaml:
-        yaml = _process_cache['yaml'] = ruamel.yaml.YAML()
+    _set_yaml()
+    yaml = _yaml.get()
     return yaml.load(input)
 
 
 def _yaml_dump(data) -> str:
-    yaml = _process_cache.get('yaml')
-    if not yaml:
-        yaml = _process_cache['yaml'] = ruamel.yaml.YAML()
+    _set_yaml()
+    yaml = _yaml.get()
     buf = io.StringIO()
     yaml.dump(data, buf)
     buf.seek(0)
@@ -36,13 +36,11 @@ class YAML:
     """A proxy class for ruamel.yaml.YAML that bypass the thread safety issue."""
     def load(self, raw: Union[str, bytes, IO]):
         raw = cast(IO, raw).read() if isinstance(raw, io.IOBase) else raw
-        fut = _x_process_executor.submit(_yaml_load, cast(str, raw))
-        return fut.result()
+        return _yaml_load(cast(str, raw))
 
     def dump(self, data, stream: Union[IO, None] = None) -> IO:
         stream = io.StringIO() if stream is None else stream
-        fut = _x_process_executor.submit(_yaml_dump, data)
-        out = fut.result()
+        out = _yaml_dump(data)
         stream.write(out.encode('utf-8') if isinstance(stream, io.BytesIO) else out)  # type: ignore
         stream.seek(0)
         return stream

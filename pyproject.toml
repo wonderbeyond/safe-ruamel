@@ -17,6 +17,9 @@ classifiers = [
     "Operating System :: OS Independent"
 ]
 
+[tool.poetry.group.dev.dependencies]
+mypy = "^0.991"
+
 [tool.poetry-dynamic-versioning]
 enable = true
 vcs = "git"
